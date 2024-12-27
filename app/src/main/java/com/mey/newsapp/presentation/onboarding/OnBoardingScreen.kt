@@ -2,9 +2,9 @@ package com.mey.newsapp.presentation.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -57,14 +57,16 @@ fun OnBoardingScreen() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            PageIndicator(modifier = Modifier.width(Dimens.PageIndicatorWidth), pageSize = pages.size, selectedPage = pagerState.currentPage)
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+
+            val scope = rememberCoroutineScope()
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.CenterStart
             ) {
-
-                val scope = rememberCoroutineScope()
-
                 if (buttonState.value[0].isNotEmpty()) {
                     NewsTextButton(
                         text = buttonState.value[0],
@@ -75,6 +77,15 @@ fun OnBoardingScreen() {
                         }
                     )
                 }
+            }
+            PageIndicator(modifier = Modifier.width(Dimens.PageIndicatorWidth), pageSize = pages.size, selectedPage = pagerState.currentPage)
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.CenterEnd
+            ) {
 
                 NewsButton(
                     text = buttonState.value[1],
