@@ -1,4 +1,4 @@
-package com.mey.newsapp.domain.usecases
+package com.mey.newsapp.domain.usecases.app_entry
 
 import com.mey.newsapp.domain.manager.LocalUserManager
 
