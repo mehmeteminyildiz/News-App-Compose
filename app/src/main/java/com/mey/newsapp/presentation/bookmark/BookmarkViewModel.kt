@@ -8,6 +8,7 @@ import com.mey.newsapp.domain.usecases.news.NewsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,8 +25,10 @@ class BookmarkViewModel
     }
 
     private fun getArticles() {
-        newsUseCases.selectArticles().onEach {
-            _state.value = _state.value.copy(articles = it)
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            newsUseCases.selectArticles().onEach {
+                _state.value = _state.value.copy(articles = it)
+            }.launchIn(viewModelScope)
+        }
     }
 }
