@@ -1,6 +1,10 @@
 package com.mey.newsapp.di
 
 import android.app.Application
+import androidx.room.Room
+import com.mey.newsapp.data.local.NewsDao
+import com.mey.newsapp.data.local.NewsDatabase
+import com.mey.newsapp.data.local.NewsTypeConverter
 import com.mey.newsapp.data.manager.LocalUserManagerIml
 import com.mey.newsapp.data.remote.NewsApi
 import com.mey.newsapp.data.repository.NewsRepositoryImpl
@@ -13,6 +17,7 @@ import com.mey.newsapp.domain.usecases.news.GetNews
 import com.mey.newsapp.domain.usecases.news.NewsUseCases
 import com.mey.newsapp.domain.usecases.news.SearchNews
 import com.mey.newsapp.util.Constants.BASE_URL
+import com.mey.newsapp.util.Constants.NEWS_DATABASE
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -65,4 +70,28 @@ object AppModule {
             searchNews = SearchNews(newsRepository)
         )
     }
+
+    // ROOM
+    @Provides
+    @Singleton
+    fun provideNewsDatabase(
+        application: Application
+    ): NewsDatabase {
+        return Room.databaseBuilder(
+            context = application,
+            klass = NewsDatabase::class.java,
+            name = NEWS_DATABASE
+        ).addTypeConverter(NewsTypeConverter())
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideNewsDao(
+        newsDatabase: NewsDatabase
+    ): NewsDao = newsDatabase.newsDao
+
+
 }

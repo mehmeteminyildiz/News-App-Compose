@@ -7,6 +7,7 @@ plugins {
 
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.ksp) // Kapt yerine KSP
 
 }
 
@@ -100,7 +101,7 @@ dependencies {
     implementation(libs.paging.compose)
 
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler) // kapt yerine ksp
     implementation(libs.room.ktx)
     implementation(libs.hilt.navigation.compose)
 
