@@ -17,6 +17,29 @@ import com.mey.newsapp.presentation.Dimens.MediumPadding1
 @Composable
 fun ArticleList(
     modifier: Modifier = Modifier,
+    articles: List<Articles>,
+    onClick: (Articles) -> Unit
+) {
+    if (articles.isEmpty()) {
+        EmptyScreen()
+    } else {
+
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(MediumPadding1),
+            contentPadding = PaddingValues(all = ExtraSmallPadding2)
+        ) {
+            items(count = articles.size) {
+                val article = articles[it]
+                ArticleCard(article = article, onClick = { onClick(article) })
+            }
+        }
+    }
+}
+
+@Composable
+fun ArticleList(
+    modifier: Modifier = Modifier,
     articles: LazyPagingItems<Articles>,
     onClick: (Articles) -> Unit
 ) {
@@ -37,23 +60,6 @@ fun ArticleList(
     }
 }
 
-@Composable
-fun ArticleList(
-    modifier: Modifier = Modifier,
-    articles: List<Articles>,
-    onClick: (Articles) -> Unit
-) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(MediumPadding1),
-        contentPadding = PaddingValues(all = ExtraSmallPadding2)
-    ) {
-        items(count = articles.size) {
-            val article = articles[it]
-            ArticleCard(article = article, onClick = { onClick(article) })
-        }
-    }
-}
 
 @Composable
 fun handlePagingResult(
@@ -73,6 +79,11 @@ fun handlePagingResult(
         }
 
         error != null -> {
+            EmptyScreen(error)
+            false
+        }
+
+        articles.itemCount <= 0 -> {
             EmptyScreen()
             false
         }
